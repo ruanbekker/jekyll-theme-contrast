@@ -1,0 +1,10 @@
+ersion: '2'
+
+services:
+  jekyll:
+    image: ruanbekker/jekyll:contrast
+    command: jekyll serve --watch --force_polling --verbose
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/srv/jekyll
