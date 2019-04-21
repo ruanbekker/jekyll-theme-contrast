@@ -27,6 +27,9 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
         
 networks:
   appnet:
