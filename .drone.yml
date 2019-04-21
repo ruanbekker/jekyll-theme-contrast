@@ -1,26 +1,8 @@
 pipeline:
-  build:
-    image: ruby
-    commands:
-      - find / -name Gemfile
-      - gem install bundler
-      - bundle install
-      - bundle exec jekyll build
-      
-  push:
-    image: drillster/drone-rsync
-    hosts: 
-      from_secret: swarm_host
-    key:
-      from_secret: swarm_key
-    source: _site/*
-    target: ~/example.com
-    recursive: true
-    user:
-      from_secret: swarm_user
-    delete: true
-    
-  deploy:
+  docker:
     image: docker
+    secrets: [ swarm_key ]
     commands:
-      - env
+    - echo ${SWARM_KEY}
+    when:
+      branch: [master, develop, release/*]
