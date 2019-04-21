@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  jekyllblog:
+    image: ruanbekker/jekyll:contrast
+    command: jekyll serve --watch --force_polling --verbose
+    networks:
+      - appnet
+    ports:
+      - 4000:4000
+    volumes:
+      - $PWD:/srv/jekyll
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.backend.loadbalancer.sticky=false"
+        - "traefik.backend.loadbalancer.swarm=true"
+        - "traefik.backend=jekyllblog"
+        - "traefik.docker.network=appnet"
+        - "traefik.entrypoints=https"
+        - "traefik.frontend.passHostHeader=true"
+        - "traefik.frontend.rule=Host:jekyyllblog.ruan.dev"
+        - "traefik.port=4000"
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        
+networks:
+  appnet:
+    external: true  
