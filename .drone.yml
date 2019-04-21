@@ -22,8 +22,5 @@ pipeline:
     
   deploy:
     image: docker
-    environment:
-      MYKEY:
-        from_secret: swarm_key
     commands:
       - env
