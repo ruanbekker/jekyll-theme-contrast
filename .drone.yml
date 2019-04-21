@@ -36,7 +36,7 @@ pipeline:
     image: ruanbekker/docker-remote-tunnel
     secrets: [ swarm_key, swarm_host ]
     commands:
-    - ls /root/context/
+    - ls /
     - echo $${SWARM_KEY} > /tmp/key
     - docker-tunnel -c root@51.15.93.65
     - export DOCKER_HOST="localhost:2376"
