@@ -4,7 +4,7 @@ pipeline:
     commands:
       - gem install bundler
       - bundle install
-      - bundle exec jekyll build
+      - bundle exec jekyll build --config _config.yml --destination ./dist/staging
       
   push:
     image: drillster/drone-rsync
@@ -55,5 +55,7 @@ pipeline:
     - docker-tunnel -c root@51.15.93.65
     - export DOCKER_HOST="localhost:2376"
     - docker service ls
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     when:
       branch: [master, develop, release/*]
