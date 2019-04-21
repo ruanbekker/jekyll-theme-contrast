@@ -1,8 +1,32 @@
 pipeline:
-  docker:
-    image: docker
-    secrets: [ swarm_key ]
+  build:
+    image: ruby
     commands:
-    - echo $${SWARM_KEY}
+      - find / -name Gemfile
+      - gem install bundler
+      - bundle install
+      - bundle exec jekyll build
+      
+  push:
+    image: drillster/drone-rsync
+    hosts: 
+      from_secret: swarm_host
+    key:
+      from_secret: swarm_key
+    source: _site/*
+    target: ~/example.com
+    recursive: true
+    user:
+      from_secret: swarm_user
+    delete: true
+    
+  deploy:
+    image: ruanbekker/docker-remote-tunnel
+    secrets: [ swarm_key, swarm_host ]
+    commands:
+    - echo $${SWARM_KEY} > /tmp/key
+    - docker-tunnel -c root@$${SWARM_HOST}
+    - source /root/.docker-tunnel.sh
+    - docker service ls
     when:
       branch: [master, develop, release/*]
