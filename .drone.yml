@@ -9,7 +9,7 @@ pipeline:
   debug:
     image: alpine
     commands:
-      - find .
+      - find / -name "_site"
       
   push:
     image: drillster/drone-rsync
@@ -17,7 +17,7 @@ pipeline:
       from_secret: swarm_host
     key:
       from_secret: swarm_key
-    source: _site/*
+    source: dist/staging/_site/*
     target: ~/example.com
     recursive: true
     user:
