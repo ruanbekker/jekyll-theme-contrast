@@ -21,7 +21,7 @@ pipeline:
     delete: true
     
   deploy:
-    image: alpine
+    image: docker
     environment:
       MYKEY:
         from_secret: swarm_key
