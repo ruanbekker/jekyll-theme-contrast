@@ -1,10 +1,7 @@
 pipeline:
   build:
-    image: ruby
+    image: ruanbekker/jekyll:bash
     commands:
-      - find / -name Gemfile
-      - gem install bundler
-      - bundle install
       - bundle exec jekyll build
       
   push:
@@ -39,7 +36,7 @@ pipeline:
     commands:
     - ls /root/context/
     - echo $${SWARM_KEY} > /tmp/key
-    - docker-tunnel -c root@$${SWARM_HOST}
+    - docker-tunnel -c root@51.15.93.65
     - export DOCKER_HOST="localhost:2376"
     - docker service ls
     when:
