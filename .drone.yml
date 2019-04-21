@@ -2,7 +2,6 @@ pipeline:
   build:
     image: ruanbekker/jekyll:base
     commands:
-      - bundle update
       - bundle exec jekyll build
       
   push:
