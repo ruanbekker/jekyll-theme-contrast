@@ -47,15 +47,9 @@ pipeline:
       event: [push]  
     
   deploy:
-    image: ruanbekker/docker-remote-tunnel
+    image: docker
     secrets: [ swarm_key, swarm_host ]
     commands:
-    - ls /drone/
     - echo $${SWARM_KEY} > /tmp/key
-    - docker-tunnel -c root@51.15.93.65
-    - export DOCKER_HOST="localhost:2376"
-    - docker service ls
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     when:
       branch: [master, develop, release/*]
