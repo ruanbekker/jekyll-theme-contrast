@@ -42,7 +42,7 @@ pipeline:
       from_secret: swarm_key
     port: 22
     command_timeout: 120
-    commands:
+    script:
       - docker stack deploy -c /root/example.com/docker-compose.yml static
     when:
       event: [push]  
