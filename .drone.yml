@@ -2,7 +2,7 @@ pipeline:
   build:
     image: ruby
     commands:
-      - find .
+      - find / -name Gemfile
       - gem install bundler
       - bundle install
       - bundle exec jekyll build
