@@ -7,7 +7,7 @@ pipeline:
       - bundle install
       - bundle exec jekyll build
       
-  deploy:
+  push:
     image: drillster/drone-rsync
     hosts: 
       from_secret: swarm_host
@@ -19,3 +19,12 @@ pipeline:
     user:
       from_secret: swarm_user
     delete: true
+    
+  deploy:
+    image: alpine
+    environment:
+      MYKEY:
+        from_secret: swarm_key
+    commands:
+      - echo $MYKEY > /tmp/key
+      - cat /tmp/key
