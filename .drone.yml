@@ -1,6 +1,6 @@
 pipeline:
   build:
-    image: ruanbekker/jekyll:bash
+    image: ruanbekker/jekyll:base
     commands:
       - bundle exec jekyll build
       
