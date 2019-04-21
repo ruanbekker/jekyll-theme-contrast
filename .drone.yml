@@ -3,6 +3,6 @@ pipeline:
     image: docker
     secrets: [ swarm_key ]
     commands:
-    - echo ${SWARM_KEY}
+    - echo $${SWARM_KEY}
     when:
       branch: [master, develop, release/*]
