@@ -17,7 +17,7 @@ pipeline:
       from_secret: swarm_host
     key:
       from_secret: swarm_key
-    source: dist/staging/_site/*
+    source: dist/staging/*
     target: ~/example.com
     recursive: true
     user:
