@@ -42,7 +42,7 @@ pipeline:
       from_secret: swarm_key
     port: 22
     script:
-      - docker stack deploy -c /root/example.com/docker-compose.yml static
+      - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
       event: [push]  
     
