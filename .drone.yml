@@ -26,5 +26,4 @@ pipeline:
       MYKEY:
         from_secret: swarm_key
     commands:
-      - echo $MYKEY > /tmp/key
-      - cat /tmp/key
+      - env
