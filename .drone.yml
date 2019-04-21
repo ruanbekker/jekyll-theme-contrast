@@ -6,6 +6,11 @@ pipeline:
       - bundle install
       - bundle exec jekyll build --config _config.yml --destination ./dist/staging
       
+  debug:
+    image: alpine
+    commands:
+      - find .
+      
   push:
     image: drillster/drone-rsync
     hosts: 
