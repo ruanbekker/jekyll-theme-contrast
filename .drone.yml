@@ -43,7 +43,7 @@ pipeline:
     port: 22
     command_timeout: 120
     commands:
-      - docker-compose up --file /root/example.com/docker-compose.yml -d
+      - docker stack deploy -c /root/example.com/docker-compose.yml static
     when:
       event: [push]  
     
