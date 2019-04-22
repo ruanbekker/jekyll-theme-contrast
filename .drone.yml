@@ -54,6 +54,26 @@ pipeline:
     when:
       event: [push]  
     
+  p1-a:
+    image: alpine
+    group: test
+    environment:
+      TAGS: foobar
+    commands:
+      - sleep 20
+      - date
+      - echo done
+      
+  p1-b:
+    image: alpine
+    group: test
+    environment:
+      TAGS: foobar
+    commands:
+      - sleep 20
+      - date
+      - echo done
+      
   deploy:
     image: docker
     secrets: [ swarm_key, swarm_host ]
