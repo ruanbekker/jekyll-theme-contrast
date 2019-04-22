@@ -20,8 +20,6 @@ pipeline:
       - gem install bundler
       - bundle install
       - bundle exec jekyll build
-      - touch data.txt
-      - hostname > data.txt
       
   rebuild-cache:
     image: drillster/drone-volume-cache
@@ -30,25 +28,6 @@ pipeline:
       - /drone/.bundle
     volumes:
       - /tmp:/cache
-      
-  debug:
-    image: alpine
-    commands:
-      - ls -lah
-      - find .
-      - pwd
-      - cat data.txt
-      - hostname >> data.txt
-  
-  debug2:
-    image: alpine
-    commands:
-      - ls -lah
-      - find .
-      - pwd
-      - cat data.txt
-      - hostname >> data.txt
-      - cat data.txt
       
   push:
     image: drillster/drone-rsync
