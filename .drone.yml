@@ -3,6 +3,7 @@ pipeline:
     image: jekyll/jekyll:builder
     commands:
       - ls -lah
+      - rm -rf Gemfile.lock
       - gem update --system
       - gem install bundler
       - bundle install
