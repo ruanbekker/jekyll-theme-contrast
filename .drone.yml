@@ -4,6 +4,7 @@ pipeline:
     commands:
       - touch Gemfile.lock
       - chmod a+w Gemfile.lock
+      - chown -R jekyll:jekyll /drone/src
       - jekyll build --config _config.yml 
       
   debug:
