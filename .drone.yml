@@ -1,73 +1,50 @@
 pipeline:
-#  build:
-#    image: jekyll/jekyll:latest
-#    commands:
-#      - touch Gemfile.lock
-#      - chmod a+w Gemfile.lock
-#      - chown -R jekyll:jekyll /drone/src
-#      - gem update --system
-#      - gem install bundler
-#      - bundle install
-#      - bundle exec jekyll build
-      
-#  push:
-#    image: drillster/drone-rsync
-#    hosts: 
-#      from_secret: swarm_host
-#    key:
-#      from_secret: swarm_key
-#    source: _site/*
-#    target: ~/example.com
-#    recursive: true
-#    user:
-#      from_secret: swarm_user
-#    delete: true
-#    script:
-#      - chmod -R 755 ~/example.com
-#    when:
-#      event: [push]
-    
-#  context:
-#    image: appleboy/drone-scp
-#    host: 
-#      from_secret: swarm_host
-#    username:
-#      from_secret: swarm_user
-#    key:
-#      from_secret: swarm_key
-#    target: /root/context
-#    source: /drone
-#    when:
-#      event: [push]
-      
-#  context-ssh:
-#    image: appleboy/drone-ssh
-#    host: 
-#      from_secret: swarm_host
-#    username:
-#      from_secret: swarm_user
-#    key:
-#      from_secret: swarm_key
-#    port: 22
-#    script:
-#      - docker stack deploy -c /root/example.com/docker-stack.yml apps
-#    when:
-#      event: [push]  
-      
-  deploy:
-    image: ruanbekker/docker-remote-tunnel
-    secrets: [ swarm_key, swarm_host ]
+  build:
+    image: jekyll/jekyll:latest
     commands:
-    - echo $${SWARM_KEY} | base64 -d > /tmp/key
-    - chmod 600 /tmp/key
-    - docker-tunnel -c root@$${SWARM_HOST}
-    #- ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -i /tmp/key -NL /tmp/my.sock:/var/run/docker.sock root@51.15.93.65 &
-    - sleep 10
-    #- export DOCKER_HOST=unix:///tmp/my.sock
-    - source /root/.docker-tunnel.sh
-    - docker ps
-    - docker-tunnel --terminate
+      - touch Gemfile.lock
+      - chmod a+w Gemfile.lock
+      - chown -R jekyll:jekyll /drone/src
+      - gem update --system
+      - gem install bundler
+      - bundle install
+      - bundle exec jekyll build
+      
+  debug:
+    image: alpine
+    commands:
+      - ls -lah
+      - find .
+      - pwd
+      
+  push:
+    image: drillster/drone-rsync
+    hosts: 
+      from_secret: swarm_host
+    key:
+      from_secret: swarm_key
+    source: _site/*
+    target: ~/example.com
+    recursive: true
+    user:
+      from_secret: swarm_user
+    delete: true
+    script:
+      - chmod -R 755 ~/example.com
     when:
       event: [push]
-      branch: [master, develop, release/*]
-
+      
+  deploy:
+    image: appleboy/drone-ssh
+    host: 
+      from_secret: swarm_host
+    username:
+      from_secret: swarm_user
+    key:
+      from_secret: swarm_key
+    port: 22
+    script:
+      - docker stack deploy -c /root/example.com/docker-stack.yml apps
+    when:
+      event: [push]  
+      
