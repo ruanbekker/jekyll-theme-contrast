@@ -53,35 +53,15 @@ pipeline:
       - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
       event: [push]  
-    
-  p1-a:
-    image: alpine
-    group: build
-    environment:
-      TAGS: foobar
-    commands:
-      - sleep 20
-      - date
-      - echo done
-      
-  p1-b:
-    image: alpine
-    group: build
-    environment:
-      TAGS: foobar
-    commands:
-      - sleep 20
-      - date
-      - echo done
       
   deploy:
-    image: ruanbekker/docker-remote-tunnel
+    image: ruanbekker/docker-remote-tools
     secrets: [ swarm_key, swarm_host ]
     commands:
     - echo $${SWARM_KEY} > /tmp/key
     - chmod 600 /tmp/key
     - cat /tmp/key
-    - ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -i $${SWARM_KEY} -NL /tmp/my.sock:/var/run/docker.sock root@51.15.93.65 &
+    - ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -i /tmp/key -NL /tmp/my.sock:/var/run/docker.sock root@51.15.93.65 &
     - sleep 10
     - export DOCKER_HOST=unix:///tmp/my.sock
     - docker ps
