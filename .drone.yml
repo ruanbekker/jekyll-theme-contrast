@@ -2,8 +2,8 @@ pipeline:
   build:
     image: jekyll/jekyll:latest
     commands:
-      - chmod 755 -R .
-      - chown -R root .
+      - touch Gemfile.lock
+      - chmod a+w Gemfile.lock
       - jekyll build --config _config.yml 
       
   debug:
