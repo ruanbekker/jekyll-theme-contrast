@@ -2,6 +2,9 @@ pipeline:
   build:
     image: jekyll/jekyll:latest
     commands:
+      - whoami
+      - chmod -R 777 .
+      - chown -R root .
       - jekyll build --config _config.yml 
       
   debug:
