@@ -4,7 +4,9 @@ pipeline:
     commands:
       - gem install bundler
       - bundle install
-      - bundle exec jekyll build --config _config.yml --destination ./dist/staging
+      - chown -R jekyll:jekyll .
+      - bundle exec jekyll build --config _config.yml 
+      - chown -R jekyll:jekyll .
       
   debug:
     image: alpine
@@ -17,7 +19,7 @@ pipeline:
       from_secret: swarm_host
     key:
       from_secret: swarm_key
-    source: dist/staging/*
+    source: _site/*
     target: ~/example.com
     recursive: true
     user:
