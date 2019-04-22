@@ -3,8 +3,6 @@ pipeline:
     image: jekyll/jekyll:latest
     commands:
       - whoami
-      - chmod -R 777 .
-      - chown -R root .
       - jekyll build --config _config.yml 
       
   debug:
@@ -24,19 +22,21 @@ pipeline:
     user:
       from_secret: swarm_user
     delete: true
+    script:
+      - chmod -R 755 ~/example.com
     
-  context:
-    image: appleboy/drone-scp
-    host: 
-      from_secret: swarm_host
-    username:
-      from_secret: swarm_user
-    key:
-      from_secret: swarm_key
-    target: /root/context
-    source: /root
-    when:
-      event: [push]
+#  context:
+#    image: appleboy/drone-scp
+#    host: 
+#      from_secret: swarm_host
+#    username:
+#      from_secret: swarm_user
+#    key:
+#      from_secret: swarm_key
+#    target: /root/context
+#    source: /root
+#    when:
+#      event: [push]
       
   context-ssh:
     image: appleboy/drone-ssh
@@ -48,7 +48,6 @@ pipeline:
       from_secret: swarm_key
     port: 22
     script:
-      - chmod -R 777 /root/example.com
       - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
       event: [push]  
