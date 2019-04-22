@@ -2,6 +2,8 @@ pipeline:
   build:
     image: jekyll/jekyll:builder
     commands:
+      - ls -lah
+      - gem update --system
       - gem install bundler
       - bundle install
       - chown -R jekyll:jekyll .
