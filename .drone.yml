@@ -5,7 +5,7 @@ pipeline:
     mount:
       - /drone/.bundle
     volumes:
-      - jekyll-blog-cache:/cache
+      - /tmp/jekyll-blog-cache:/cache
       
   build:
     image: jekyll/jekyll:latest
