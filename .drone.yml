@@ -62,7 +62,7 @@ pipeline:
     - chmod 400 /tmp/key
     - docker-tunnel -c root@$${SWARM_HOST}
     - screen -ls
-    - export DOCKER_HOST=localhost:2376
+    - export DOCKER_HOST=tcp://localhost:2376
     - sleep 2
     - docker node ls
     - docker-tunnel --terminate
