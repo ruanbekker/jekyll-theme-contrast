@@ -1,9 +1,8 @@
 pipeline:
   build:
-    image: jekyll/jekyll:builder
+    image: jekyll/jekyll:latest
     commands:
-      - gem install jekyll
-      - bundle exec jekyll build --config _config.yml 
+      - jekyll build --config _config.yml 
       
   debug:
     image: alpine
