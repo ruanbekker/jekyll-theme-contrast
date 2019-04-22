@@ -58,7 +58,7 @@ pipeline:
     image: ruanbekker/docker-remote-tools
     secrets: [ swarm_key, swarm_host ]
     commands:
-    - echo $${SWARM_KEY} | base64 --decode > /tmp/key
+    - echo $${SWARM_KEY} | base64 -d > /tmp/key
     - chmod 600 /tmp/key
     - cat /tmp/key
     - ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -i /tmp/key -NL /tmp/my.sock:/var/run/docker.sock root@51.15.93.65 &
