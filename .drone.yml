@@ -48,6 +48,7 @@ pipeline:
       from_secret: swarm_key
     port: 22
     script:
+      - chmod -R 777 /root/example.com
       - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
       event: [push]  
