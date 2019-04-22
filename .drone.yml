@@ -64,3 +64,4 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
       branch: [master, develop, release/*]
+
