@@ -55,13 +55,17 @@ pipeline:
       event: [push]  
     
   deploy:
-    image: docker
+    image: ruanbekker/docker-remote-tunnel
     secrets: [ swarm_key, swarm_host ]
     commands:
     - echo $${SWARM_KEY} > /tmp/key
+    - docker-tunnel -c root@$${SWARM_HOST}
+    - source /root/.docker-tunnel.sh
     - docker node ls
+    - docker-tunnel --terminate
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
+      event: [push]
       branch: [master, develop, release/*]
 
