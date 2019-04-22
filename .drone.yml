@@ -75,13 +75,15 @@ pipeline:
       - echo done
       
   deploy:
-    image: docker
+    image: ruanbekker/docker-remote-tunnel
     secrets: [ swarm_key, swarm_host ]
     commands:
     - echo $${SWARM_KEY} > /tmp/key
+    - chmod 400 /tmp/key
+    - ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -i /tmp/key -NL /tmp/my.sock:/var/run/docker.sock root@51.15.93.65 &
+    - sleep 10
+    - export DOCKER_HOST=unix:///tmp/my.sock
     - docker ps
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     when:
       event: [push]
       branch: [master, develop, release/*]
