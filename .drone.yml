@@ -24,19 +24,21 @@ pipeline:
     delete: true
     script:
       - chmod -R 755 ~/example.com
+    when:
+      event: [push]
     
-#  context:
-#    image: appleboy/drone-scp
-#    host: 
-#      from_secret: swarm_host
-#    username:
-#      from_secret: swarm_user
-#    key:
-#      from_secret: swarm_key
-#    target: /root/context
-#    source: /root
-#    when:
-#      event: [push]
+  context:
+    image: appleboy/drone-scp
+    host: 
+      from_secret: swarm_host
+    username:
+      from_secret: swarm_user
+    key:
+      from_secret: swarm_key
+    target: /root/context
+    source: /drone
+    when:
+      event: [push]
       
   context-ssh:
     image: appleboy/drone-ssh
@@ -57,5 +59,8 @@ pipeline:
     secrets: [ swarm_key, swarm_host ]
     commands:
     - echo $${SWARM_KEY} > /tmp/key
+    - docker node ls
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     when:
       branch: [master, develop, release/*]
