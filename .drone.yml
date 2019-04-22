@@ -7,9 +7,7 @@ pipeline:
       - gem update --system
       - gem install bundler
       - bundle install
-      - chown -R jekyll:jekyll .
       - bundle exec jekyll build --config _config.yml 
-      - chown -R jekyll:jekyll .
       
   debug:
     image: alpine
