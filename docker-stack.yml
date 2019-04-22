@@ -20,7 +20,7 @@ services:
         - "traefik.docker.network=appnet"
         - "traefik.entrypoints=https"
         - "traefik.frontend.passHostHeader=true"
-        - "traefik.frontend.rule=Host:jekyyllblog.ruan.dev"
+        - "traefik.frontend.rule=Host:jekyllblog.ruan.dev"
         - "traefik.port=4000"
       update_config:
         parallelism: 2
