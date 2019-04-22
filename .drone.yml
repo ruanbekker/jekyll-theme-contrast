@@ -3,6 +3,7 @@ pipeline:
     image: jekyll/jekyll:latest
     commands:
       - chmod 755 -R .
+      - chown -R root .
       - jekyll build --config _config.yml 
       
   debug:
