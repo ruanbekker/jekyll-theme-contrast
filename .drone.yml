@@ -14,7 +14,7 @@ pipeline:
     commands:
       - touch Gemfile.lock
       - chmod a+w Gemfile.lock
-      - chown -R jekyll:jekyll /drone/src
+      - chown -R jekyll:jekyll /drone/src /drone/.bundle
       - gem update --system
       - gem install bundler
       - bundle install
