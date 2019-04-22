@@ -60,11 +60,14 @@ pipeline:
     commands:
     - echo $${SWARM_KEY} > /tmp/key
     - docker-tunnel -c root@$${SWARM_HOST}
+    - screen -ls
+    - ps aux
+    - nc -vz localhost 2376
+    - nc -vz $${SWARM_HOST} 22
     - source /root/.docker-tunnel.sh
+    - export DOCKER_HOST="localhost:2376"
     - docker node ls
     - docker-tunnel --terminate
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     when:
       event: [push]
       branch: [master, develop, release/*]
