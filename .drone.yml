@@ -2,7 +2,7 @@ pipeline:
   build:
     image: jekyll/jekyll:latest
     commands:
-      - whoami
+      - chmod 755 -R .
       - jekyll build --config _config.yml 
       
   debug:
