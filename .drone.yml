@@ -1,17 +1,4 @@
-pipeline:      
-  build:
-    image: jekyll/jekyll:latest
-    environment:
-      - BUNDLE_PATH=/drone/.bundle
-    commands:
-      - touch Gemfile.lock
-      - chmod a+w Gemfile.lock
-      - chown -R jekyll:jekyll /drone/src
-      - gem update --system
-      - gem install bundler
-      - bundle install
-      - bundle exec jekyll build
-      
+pipeline:
   qux:
     image: golang:1.7
     group: test
@@ -26,6 +13,27 @@ pipeline:
       - echo step 4
       - sleep 10
       - echo done 4
+  ping:
+    image: postgres
+    commands:
+      - sleep 10
+      - psql -U postgres -d test -h database -p 5432 -c "CREATE TABLE person( NAME TEXT );"
+      - psql -U postgres -d test -h database -p 5432 -c "INSERT INTO person VALUES('john smith');"
+      - psql -U postgres -d test -h database -p 5432 -c "INSERT INTO person VALUES('jane doe');"
+      - psql -U postgres -d test -h database -p 5432 -c "SELECT * FROM person;"
+
+  build:
+    image: jekyll/jekyll:latest
+    environment:
+      - BUNDLE_PATH=/drone/.bundle
+    commands:
+      - touch Gemfile.lock
+      - chmod a+w Gemfile.lock
+      - chown -R jekyll:jekyll /drone/src
+      - gem update --system
+      - gem install bundler
+      - bundle install
+      - bundle exec jekyll build
       
   push:
     image: drillster/drone-rsync
@@ -57,5 +65,11 @@ pipeline:
       - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
       event: [push]  
-    
+
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=test
   
