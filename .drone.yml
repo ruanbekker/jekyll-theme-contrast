@@ -1,27 +1,4 @@
 pipeline:
-  qux:
-    image: golang:1.7
-    group: test
-    commands:
-      - echo step 3
-      - sleep 10
-      - echo done 3
-  quux:
-    image: golang:1.7
-    group: test
-    commands:
-      - echo step 4
-      - sleep 10
-      - echo done 4
-  ping:
-    image: postgres
-    commands:
-      - sleep 10
-      - psql -U postgres -d test -h database -p 5432 -c "CREATE TABLE person( NAME TEXT );"
-      - psql -U postgres -d test -h database -p 5432 -c "INSERT INTO person VALUES('john smith');"
-      - psql -U postgres -d test -h database -p 5432 -c "INSERT INTO person VALUES('jane doe');"
-      - psql -U postgres -d test -h database -p 5432 -c "SELECT * FROM person;"
-
   build:
     image: jekyll/jekyll:latest
     environment:
@@ -29,7 +6,7 @@ pipeline:
     commands:
       - touch Gemfile.lock
       - chmod a+w Gemfile.lock
-      - chown -R jekyll:jekyll /drone/src
+      - chown -R jekyll:jekyll /drone
       - gem update --system
       - gem install bundler
       - bundle install
@@ -64,12 +41,5 @@ pipeline:
     script:
       - docker stack deploy -c /root/example.com/docker-stack.yml apps
     when:
-      event: [push]  
-
-services:
-  database:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=test
+      event: [push]
   
